@@ -1,0 +1,40 @@
+<masters>
+    <master idx="0" appTimePeriod="1000000" refClockSyncCycles="5">
+        <slave idx="0" type="generic" vid="00000002" pid="07162c52" configPdos="true" name="DINOUT">
+            <syncManager idx="0" dir="out">
+                <pdo idx="1608">
+                    <pdoEntry idx="7080" subIdx="01" bitLen="1" halPin="channel-5-out" halType="bit"/>
+                </pdo>
+                <pdo idx="1609">
+                    <pdoEntry idx="7090" subIdx="01" bitLen="1" halPin="channel-6-out" halType="bit"/>
+                </pdo>
+                <pdo idx="160a">
+                    <pdoEntry idx="70a0" subIdx="01" bitLen="1" halPin="channel-7-out" halType="bit"/>
+                </pdo>
+                <pdo idx="160b">
+                    <pdoEntry idx="70b0" subIdx="01" bitLen="1" halPin="channel-8-out" halType="bit"/>
+                </pdo>
+            </syncManager>
+            <syncManager idx="1" dir="in">
+                <pdo idx="1a00">
+                    <pdoEntry idx="6000" subIdx="01" bitLen="1" halPin="channel-1-in" halType="bit"/>
+                </pdo>
+                <pdo idx="1a01">
+                    <pdoEntry idx="6010" subIdx="01" bitLen="1" halPin="channel-2-in" halType="bit"/>
+                </pdo>
+                <pdo idx="1a02">
+                    <pdoEntry idx="6020" subIdx="01" bitLen="1" halPin="channel-3-in" halType="bit"/>
+                </pdo>
+                <pdo idx="1a03">
+                    <pdoEntry idx="6030" subIdx="01" bitLen="1" halPin="channel-4-in" halType="bit"/>
+                </pdo>
+            </syncManager>
+        </slave>
+        <slave idx="1" type="EL4001" name="AOUT" />
+        <slave idx="2" type="EL7041-1000" name="X-AXIS">
+            <modParam name="maxCurrent" value="4.2" />
+            <modParam name="nominalVoltage" value="48.0" />
+            <!-- <modParam name="encoder" value="false" /> -->
+        </slave>
+    </master>
+</masters>
