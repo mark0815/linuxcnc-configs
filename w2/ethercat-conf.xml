@@ -36,5 +36,15 @@
             <modParam name="nominalVoltage" value="48.0" />
             <!-- <modParam name="encoder" value="false" /> -->
         </slave>
+        <slave idx="3" type="EL7041-1000" name="Y-AXIS">
+            <modParam name="maxCurrent" value="4.2" />
+            <modParam name="nominalVoltage" value="48.0" />
+            <!-- <modParam name="encoder" value="false" /> -->
+        </slave>
+        <slave idx="4" type="EL7041-1000" name="Z-AXIS">
+            <modParam name="maxCurrent" value="4.2" />
+            <modParam name="nominalVoltage" value="48.0" />
+            <!-- <modParam name="encoder" value="false" /> -->
+        </slave>
     </master>
 </masters>

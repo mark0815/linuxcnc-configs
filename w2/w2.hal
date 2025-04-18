@@ -3,7 +3,7 @@ loadrt  [KINS]KINEMATICS
 loadrt  [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 loadusr -W lcec_conf [LCEC]CONFIG
 loadrt  lcec
-loadrt  pid names=x-pid
+loadrt  pid names=x-pid,y-pid,z-pid
 
 # --- Attach modules to Servo Thread
 addf lcec.read-all              servo-thread
@@ -11,6 +11,8 @@ addf lcec.write-all             servo-thread
 addf motion-command-handler     servo-thread
 addf motion-controller          servo-thread
 addf x-pid.do-pid-calcs         servo-thread
+addf y-pid.do-pid-calcs         servo-thread
+addf z-pid.do-pid-calcs         servo-thread
 
 # --- Machine Controls
 net machine-is-enabled      <= motion.motion-enabled
@@ -24,10 +26,12 @@ net ec-all-op               <= lcec.all-op
 net estop   <= iocontrol.0.user-enable-out
 net estop   => iocontrol.0.emc-enable-in
 
-# X-Axis Home and Endstops
+############################
+### X-AXIS
+############################
+
+# X-Axis Home
 net x-home          <= lcec.0.X-AXIS.srv-din1    => joint.0.home-sw-in
-#net x-limit-neg     <= lcec.0.X-AXIS.srv-din1    => joint.0.neg-lim-sw-in
-#net x-limit-pos     <= lcec.0.X-AXIS.srv-din2    => joint.0.pos-lim-sw-in
 
 # --- X-Axis PID controller
 setp x-pid.Pgain        [JOINT_0]P
@@ -58,3 +62,78 @@ net x-pos-fb            <= lcec.0.X-AXIS.enc-pos
 # EtherCAT Ready State
 net x-ready             <= lcec.0.X-AXIS.srv-ready
 net x-ready-to-enable   <= lcec.0.X-AXIS.srv-ready-to-enable
+
+
+############################
+### Y-AXIS
+############################
+
+# Y-Axis Home
+net y-home          <= lcec.0.Y-AXIS.srv-din1    => joint.1.home-sw-in
+
+# --- Y-Axis PID controller
+setp y-pid.Pgain        [JOINT_1]P
+setp y-pid.Igain        [JOINT_1]I
+setp y-pid.Dgain        [JOINT_1]D
+setp y-pid.FF0          [JOINT_1]FF0
+setp y-pid.FF1          [JOINT_1]FF1
+setp y-pid.FF2          [JOINT_1]FF2
+setp y-pid.deadband     [JOINT_1]DEADBAND
+setp y-pid.maxoutput    [JOINT_1]MAX_OUTPUT
+
+# --- Y-Axis Motion
+# Configure EtherCAT
+setp lcec.0.Y-AXIS.srv-scale 	   [JOINT_1]SCALE
+setp lcec.0.Y-AXIS.enc-pos-scale   [JOINT_1]ENC_SCALE
+# PID
+net y-enable  <=> y-pid.index-enable
+# PID to Joint
+net y-pos-cmd           <= joint.1.motor-pos-cmd    =>  y-pid.command
+net y-output            <= y-pid.output
+net y-enable            <= joint.1.amp-enable-out   =>  y-pid.enable
+net y-pos-fb                                        =>  y-pid.feedback => joint.1.motor-pos-fb
+# Joint to EtherCAT
+net y-enable                                        => lcec.0.Y-AXIS.srv-enable
+net y-output                                        => lcec.0.Y-AXIS.srv-cmd
+net y-amp-fault         <= lcec.0.Y-AXIS.srv-error  => joint.1.amp-fault-in
+net y-pos-fb            <= lcec.0.Y-AXIS.enc-pos
+# EtherCAT Ready State
+net y-ready             <= lcec.0.Y-AXIS.srv-ready
+net y-ready-to-enable   <= lcec.0.Y-AXIS.srv-ready-to-enable
+
+############################
+### Z-AXIS
+############################
+
+# Z-Axis Home
+net z-home          <= lcec.0.Z-AXIS.srv-din1    => joint.2.home-sw-in
+
+# --- Z-Axis PID controller
+setp z-pid.Pgain        [JOINT_2]P
+setp z-pid.Igain        [JOINT_2]I
+setp z-pid.Dgain        [JOINT_2]D
+setp z-pid.FF0          [JOINT_2]FF0
+setp z-pid.FF1          [JOINT_2]FF1
+setp z-pid.FF2          [JOINT_2]FF2
+setp z-pid.deadband     [JOINT_2]DEADBAND
+setp z-pid.maxoutput    [JOINT_2]MAX_OUTPUT
+
+# --- Z-Axis Motion
+# Configure EtherCAT
+setp lcec.0.Z-AXIS.srv-scale 	   [JOINT_2]SCALE
+setp lcec.0.Z-AXIS.enc-pos-scale   [JOINT_2]ENC_SCALE
+# PID
+net z-enable  <=> z-pid.index-enable
+# PID to Joint
+net z-pos-cmd           <= joint.2.motor-pos-cmd    =>  z-pid.command
+net z-output            <= z-pid.output
+net z-enable            <= joint.2.amp-enable-out   =>  z-pid.enable
+net z-pos-fb                                        =>  z-pid.feedback => joint.2.motor-pos-fb
+# Joint to EtherCAT
+net z-enable                                        => lcec.0.Z-AXIS.srv-enable
+net z-output                                        => lcec.0.Z-AXIS.srv-cmd
+net z-amp-fault         <= lcec.0.Z-AXIS.srv-error  => joint.2.amp-fault-in
+net z-pos-fb            <= lcec.0.Z-AXIS.enc-pos
+# EtherCAT Ready State
+net z-ready             <= lcec.0.Z-AXIS.srv-ready
+net z-ready-to-enable   <= lcec.0.Z-AXIS.srv-ready-to-enable
