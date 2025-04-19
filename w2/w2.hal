@@ -151,6 +151,7 @@ net z-ready-to-enable   <= lcec.0.Z-AXIS.srv-ready-to-enable
 ### SPINDLE
 ############################
 
+# 1 (~10V, aout-0-value) / 7500 (spindle speed at 10V) = 0.000133333333333
 setp scale.0.gain 0.000133333333333
 
 # Spindle to Scale
