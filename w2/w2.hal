@@ -4,6 +4,7 @@ loadrt  [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]J
 loadusr -W lcec_conf [LCEC]CONFIG
 loadrt  lcec
 loadrt  pid names=x-pid,y-pid,z-pid
+loadrt  scale count=1
 
 # --- Attach modules to Servo Thread
 addf lcec.read-all              servo-thread
@@ -13,6 +14,7 @@ addf motion-controller          servo-thread
 addf x-pid.do-pid-calcs         servo-thread
 addf y-pid.do-pid-calcs         servo-thread
 addf z-pid.do-pid-calcs         servo-thread
+addf scale.0                    servo-thread
 
 # --- Machine Controls
 net machine-is-enabled      <= motion.motion-enabled
@@ -25,6 +27,9 @@ net ec-all-op               <= lcec.all-op
 # --- E-Stop
 net estop   <= iocontrol.0.user-enable-out
 net estop   => iocontrol.0.emc-enable-in
+
+# --- Coolant
+net coolant-mist      <=  iocontrol.0.coolant-mist => lcec.0.DINOUT.channel-8-out
 
 ############################
 ### X-AXIS
@@ -40,6 +45,7 @@ setp x-pid.Dgain        [JOINT_0]D
 setp x-pid.FF0          [JOINT_0]FF0
 setp x-pid.FF1          [JOINT_0]FF1
 setp x-pid.FF2          [JOINT_0]FF2
+setp x-pid.bias         [JOINT_0]BIAS
 setp x-pid.deadband     [JOINT_0]DEADBAND
 setp x-pid.maxoutput    [JOINT_0]MAX_OUTPUT
 
@@ -78,6 +84,7 @@ setp y-pid.Dgain        [JOINT_1]D
 setp y-pid.FF0          [JOINT_1]FF0
 setp y-pid.FF1          [JOINT_1]FF1
 setp y-pid.FF2          [JOINT_1]FF2
+setp y-pid.bias         [JOINT_1]BIAS
 setp y-pid.deadband     [JOINT_1]DEADBAND
 setp y-pid.maxoutput    [JOINT_1]MAX_OUTPUT
 
@@ -115,6 +122,7 @@ setp z-pid.Dgain        [JOINT_2]D
 setp z-pid.FF0          [JOINT_2]FF0
 setp z-pid.FF1          [JOINT_2]FF1
 setp z-pid.FF2          [JOINT_2]FF2
+setp z-pid.bias         [JOINT_2]BIAS
 setp z-pid.deadband     [JOINT_2]DEADBAND
 setp z-pid.maxoutput    [JOINT_2]MAX_OUTPUT
 
@@ -137,3 +145,19 @@ net z-pos-fb            <= lcec.0.Z-AXIS.enc-pos
 # EtherCAT Ready State
 net z-ready             <= lcec.0.Z-AXIS.srv-ready
 net z-ready-to-enable   <= lcec.0.Z-AXIS.srv-ready-to-enable
+
+
+############################
+### SPINDLE
+############################
+
+setp scale.0.gain 0.000133333333333
+
+# Spindle to Scale
+net spindle-speed-scale <=  spindle.0.speed-out     => scale.0.in
+
+# Spindle/Scale to EtherCAT
+net spindle-cw          <=  spindle.0.forward       => lcec.0.DINOUT.channel-6-out
+net spindle-ccw         <=  spindle.0.reverse       => lcec.0.DINOUT.channel-7-out
+net spindle-enable      <=  spindle.0.on            => lcec.0.DINOUT.channel-5-out => lcec.0.AOUT.aout-0-enable
+net spindle-speed       <=  scale.0.out             => lcec.0.AOUT.aout-0-value
