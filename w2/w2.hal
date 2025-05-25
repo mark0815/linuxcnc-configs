@@ -29,7 +29,7 @@ net estop   <= iocontrol.0.user-enable-out
 net estop   => iocontrol.0.emc-enable-in
 
 # --- Coolant
-net coolant-mist      <=  iocontrol.0.coolant-mist => lcec.0.DINOUT.channel-8-out
+net coolant-mist      <=  iocontrol.0.coolant-mist => lcec.0.DOUT8.dout-0
 
 ############################
 ### X-AXIS
@@ -158,7 +158,7 @@ setp scale.0.gain 0.000133333333333
 net spindle-speed-scale <=  spindle.0.speed-out     => scale.0.in
 
 # Spindle/Scale to EtherCAT
-net spindle-cw          <=  spindle.0.forward       => lcec.0.DINOUT.channel-6-out
-net spindle-ccw         <=  spindle.0.reverse       => lcec.0.DINOUT.channel-7-out
-net spindle-enable      <=  spindle.0.on            => lcec.0.DINOUT.channel-5-out => lcec.0.AOUT.aout-0-enable
+net spindle-ccw         <=  spindle.0.reverse       => lcec.0.DINOUT.channel-8-out
+net spindle-cw          <=  spindle.0.forward       => lcec.0.DINOUT.channel-7-out
+net spindle-enable      <=  spindle.0.on            => lcec.0.DINOUT.channel-5-out => lcec.0.DINOUT.channel-6-out => lcec.0.AOUT.aout-0-enable
 net spindle-speed       <=  scale.0.out             => lcec.0.AOUT.aout-0-value

@@ -46,5 +46,7 @@
             <modParam name="nominalVoltage" value="48.0" />
             <!-- <modParam name="encoder" value="false" /> -->
         </slave>
+        <slave idx="5" type="EL1008" name="DIN8" />
+        <slave idx="6" type="EL2008" name="DOUT8" />
     </master>
 </masters>
