@@ -5,6 +5,7 @@ loadusr -W lcec_conf [LCEC]CONFIG
 loadrt  lcec
 loadrt  pid names=x-pid,y-pid,z-pid
 loadrt  scale count=1
+loadrt  not names=home-sw-x-not,home-sw-y-not,home-sw-z-not
 
 # --- Attach modules to Servo Thread
 addf lcec.read-all              servo-thread
@@ -15,6 +16,9 @@ addf x-pid.do-pid-calcs         servo-thread
 addf y-pid.do-pid-calcs         servo-thread
 addf z-pid.do-pid-calcs         servo-thread
 addf scale.0                    servo-thread
+addf home-sw-x-not              servo-thread
+addf home-sw-y-not              servo-thread
+addf home-sw-z-not              servo-thread
 
 # --- Machine Controls
 net machine-is-enabled      <= motion.motion-enabled
@@ -36,7 +40,8 @@ net coolant-mist      <=  iocontrol.0.coolant-mist => lcec.0.DOUT8.dout-0
 ############################
 
 # X-Axis Home
-net x-home          <= lcec.0.X-AXIS.srv-din1    => joint.0.home-sw-in
+net x-home-not          <= lcec.0.X-AXIS.srv-din1    => home-sw-x-not.in
+net x-home              <= home-sw-x-not.out         => joint.0.home-sw-in
 
 # --- X-Axis PID controller
 setp x-pid.Pgain        [JOINT_0]P
@@ -54,7 +59,7 @@ setp x-pid.maxoutput    [JOINT_0]MAX_OUTPUT
 setp lcec.0.X-AXIS.srv-scale 	   [JOINT_0]SCALE
 setp lcec.0.X-AXIS.enc-pos-scale   [JOINT_0]ENC_SCALE
 # PID
-net x-enable  <=> x-pid.index-enable
+net x-enable            <=> x-pid.index-enable
 # PID to Joint
 net x-pos-cmd           <= joint.0.motor-pos-cmd    =>  x-pid.command
 net x-output            <= x-pid.output
@@ -75,7 +80,8 @@ net x-ready-to-enable   <= lcec.0.X-AXIS.srv-ready-to-enable
 ############################
 
 # Y-Axis Home
-net y-home          <= lcec.0.Y-AXIS.srv-din1    => joint.1.home-sw-in
+net y-home-not          <= lcec.0.Y-AXIS.srv-din1    => home-sw-y-not.in
+net y-home              <= home-sw-y-not.out         => joint.1.home-sw-in
 
 # --- Y-Axis PID controller
 setp y-pid.Pgain        [JOINT_1]P
@@ -93,7 +99,7 @@ setp y-pid.maxoutput    [JOINT_1]MAX_OUTPUT
 setp lcec.0.Y-AXIS.srv-scale 	   [JOINT_1]SCALE
 setp lcec.0.Y-AXIS.enc-pos-scale   [JOINT_1]ENC_SCALE
 # PID
-net y-enable  <=> y-pid.index-enable
+net y-enable            <=> y-pid.index-enable
 # PID to Joint
 net y-pos-cmd           <= joint.1.motor-pos-cmd    =>  y-pid.command
 net y-output            <= y-pid.output
@@ -113,7 +119,8 @@ net y-ready-to-enable   <= lcec.0.Y-AXIS.srv-ready-to-enable
 ############################
 
 # Z-Axis Home
-net z-home          <= lcec.0.Z-AXIS.srv-din1    => joint.2.home-sw-in
+net z-home-not          <= lcec.0.Z-AXIS.srv-din1    => home-sw-z-not.in
+net z-home              <= home-sw-z-not.out         => joint.2.home-sw-in
 
 # --- Z-Axis PID controller
 setp z-pid.Pgain        [JOINT_2]P
@@ -131,7 +138,7 @@ setp z-pid.maxoutput    [JOINT_2]MAX_OUTPUT
 setp lcec.0.Z-AXIS.srv-scale 	   [JOINT_2]SCALE
 setp lcec.0.Z-AXIS.enc-pos-scale   [JOINT_2]ENC_SCALE
 # PID
-net z-enable  <=> z-pid.index-enable
+net z-enable            <=> z-pid.index-enable
 # PID to Joint
 net z-pos-cmd           <= joint.2.motor-pos-cmd    =>  z-pid.command
 net z-output            <= z-pid.output
