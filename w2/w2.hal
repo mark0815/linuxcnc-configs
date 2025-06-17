@@ -7,6 +7,7 @@ loadrt  pid names=x-pid,y-pid,z-pid
 loadrt  scale count=1
 loadrt  not names=home-sw-x-not,home-sw-y-not,home-sw-z-not
 
+
 # --- Attach modules to Servo Thread
 addf lcec.read-all              servo-thread
 addf lcec.write-all             servo-thread
@@ -19,6 +20,7 @@ addf scale.0                    servo-thread
 addf home-sw-x-not              servo-thread
 addf home-sw-y-not              servo-thread
 addf home-sw-z-not              servo-thread
+
 
 # --- Machine Controls
 net machine-is-enabled      <= motion.motion-enabled
@@ -162,10 +164,14 @@ net z-ready-to-enable   <= lcec.0.Z-AXIS.srv-ready-to-enable
 setp scale.0.gain 0.000133333333333
 
 # Spindle to Scale
-net spindle-speed-scale <=  spindle.0.speed-out     => scale.0.in
+net spindle-speed-scale <=  spindle.0.speed-out-abs => scale.0.in
 
 # Spindle/Scale to EtherCAT
-net spindle-ccw         <=  spindle.0.reverse       => lcec.0.DINOUT.channel-8-out
 net spindle-cw          <=  spindle.0.forward       => lcec.0.DINOUT.channel-7-out
-net spindle-enable      <=  spindle.0.on            => lcec.0.DINOUT.channel-5-out => lcec.0.DINOUT.channel-6-out => lcec.0.AOUT.aout-0-enable
-net spindle-speed       <=  scale.0.out             => lcec.0.AOUT.aout-0-value
+net spindle-ccw         <=  spindle.0.reverse       => lcec.0.DINOUT.channel-8-out
+net spindle-enable      <=  spindle.0.on            => lcec.0.AOUT.aout-0-enable => lcec.0.AOUTC.aout-1-enable
+net spindle-speed       <=  scale.0.out             => lcec.0.AOUT.aout-0-value => lcec.0.AOUTC.aout-1-value
+
+
+# Spindle pin 14 FREIGABE
+net machine-is-enabled                              => lcec.0.DINOUT.channel-5-out => lcec.0.DINOUT.channel-6-out

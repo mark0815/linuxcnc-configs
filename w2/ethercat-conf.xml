@@ -48,5 +48,6 @@
         </slave>
         <slave idx="5" type="EL1008" name="DIN8" />
         <slave idx="6" type="EL2008" name="DOUT8" />
+        <slave idx="7" type="EL4122" name="AOUTC" />
     </master>
 </masters>
