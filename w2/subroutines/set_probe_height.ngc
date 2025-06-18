@@ -1,0 +1,18 @@
+o <set_probe_height> sub
+
+G49
+
+G90
+
+(define new tool length offset parameters)
+#<current_z_pos_in_g53> = [#5213 - #5223 - #5422]
+#<new_tool_length_offset> = [ABS[#<_tool_setter_z_pos>] - #<current_z_pos_in_g53>]
+
+G10 L1 P [#<_ini[TOOL_SENSOR]probe_tool_number>] Z [#<new_tool_length_offset>]
+G43  (enable tool length offset)
+
+G43
+
+o <set_probe_height> endsub
+
+M2 (end program)

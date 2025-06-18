@@ -169,9 +169,8 @@ net spindle-speed-scale <=  spindle.0.speed-out-abs => scale.0.in
 # Spindle/Scale to EtherCAT
 net spindle-cw          <=  spindle.0.forward       => lcec.0.DINOUT.channel-7-out
 net spindle-ccw         <=  spindle.0.reverse       => lcec.0.DINOUT.channel-8-out
-net spindle-enable      <=  spindle.0.on            => lcec.0.AOUT.aout-0-enable => lcec.0.AOUTC.aout-1-enable
-net spindle-speed       <=  scale.0.out             => lcec.0.AOUT.aout-0-value => lcec.0.AOUTC.aout-1-value
+net spindle-enable      <=  spindle.0.on            => lcec.0.AOUT.aout-0-enable
+net spindle-speed       <=  scale.0.out             => lcec.0.AOUT.aout-0-value
 
-
-# Spindle pin 14 FREIGABE
+# Spindle pin 13 QUIT and 14 FREIGABE
 net machine-is-enabled                              => lcec.0.DINOUT.channel-5-out => lcec.0.DINOUT.channel-6-out

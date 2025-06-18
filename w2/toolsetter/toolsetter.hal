@@ -1,0 +1,6 @@
+
+# Toolsetter Trigger Input
+net toolsetter-trigger              <= lcec.0.DIN8.din-0-not    => motion.probe-input
+
+# Toolsetter Overtravel ESTOP
+#net toolsetter-overtravel           <= lcec.0.DIN8.din-1-not => halui.estop.activate

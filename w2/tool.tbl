@@ -1,0 +1,12 @@
+T1 P1 D3.000000 Z+182.007500 ;3d-taster
+T2 P2 D8.000000 Z+75.025001 ;8mm alu
+T4 P4 D4.000000 Z+83.592500 ;4mm alu er
+T5 P5 D2.000000 Z+81.052500 ;2mm alu er
+T7 P7 D8.000000 Z+76.207500 ;45deg chamfer
+T9 P9 D50.000000 Z+96.410000 ;50mm shell mill alu
+T10 P10 D2.000000 Z+82.184000 ;spring loaded engraver
+T16 P16 D3.175000 Z+82.590000 ;Engraver 60deg 3.175mm
+T17 P17 D6.000000 Z+91.517500 ;Spot Drill 6mm 118dg
+T18 P18 D0.200000 Z+77.659300 ;spring loaded engraver
+T19 P19 D10.000000 Z+75.000000 ;10mm 6fl vhm
+T11 P11 D3.000000 Z+148.042500 ;Drill chuck variable drill
