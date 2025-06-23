@@ -80,21 +80,21 @@ net program.resume vc-p2s.program.resume => halui.program.resume
 net program.stop   vc-p2s.program.stop   => halui.program.stop
 
 # 9---ZERO
-net zero-x vc-p2s.zero-x => halui.mdi-command-05
-net zero-y vc-p2s.zero-y => halui.mdi-command-06
-net zero-z vc-p2s.zero-z => halui.mdi-command-07
-net go-to-zero vc-p2s.go-to-zero  => halui.mdi-command-08
+net zero-x vc-p2s.zero-x            => halui.mdi-command-05
+net zero-y vc-p2s.zero-y            => halui.mdi-command-06
+net zero-z vc-p2s.zero-z            => halui.mdi-command-07
+net go-to-zero vc-p2s.go-to-zero    => halui.mdi-command-08
 
 
 # 10---SPINDLE
-net spindle.is-on halui.spindle.0.is-on =>  vc-p2s.spindle.is-on
-net spindle.start  vc-p2s.spindle.start  => halui.spindle.0.start
-net spindle.stop  vc-p2s.spindle.stop  => halui.spindle.0.stop
+net spindle.is-on   halui.spindle.0.is-on   =>  vc-p2s.spindle.is-on
+net spindle.start   vc-p2s.spindle.start    => halui.spindle.0.start
+net spindle.stop    vc-p2s.spindle.stop     => halui.spindle.0.stop
 
 # 11---E-STOP
-net estop-mpg vc-p2s.estop.activate => halui.estop.activate
-net reset-mpg vc-p2s.estop.reset => halui.estop.reset
-net estop-is-activated-mpg halui.estop.is-activated => vc-p2s.estop.is-activated
+#net estop-mpg vc-p2s.estop.activate    => halui.estop.activate
+net reset-mpg vc-p2s.estop.reset        => halui.estop.reset
+net estop-is-activated-mpg              <= halui.estop.is-activated => vc-p2s.estop.is-activated
 
 # 12---MACHINE
 net machine-on  vc-p2s.machine.on  => halui.machine.on
