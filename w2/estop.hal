@@ -1,18 +1,19 @@
-loadrt estop_latch names=mpg,toolsetter
-addf estop-latch.mpg            servo-thread
-addf estop-latch.toolsetter     servo-thread
+loadrt estop_latch names=estop_latch_mpg,estop_latch_toolsetter
+addf estop_latch_mpg            servo-thread
+addf estop_latch_toolsetter     servo-thread
 
 # Chain all ok-out to ok-in starting with iocontrol.0.user-enable-out
-net estop-latch-mpg-ok-in           <= iocontrol.0.user-enable-out  => estop-latch.mpg.ok-in
-net estop-latch-mpg-ts-ok-out-in    <= estop-latch.mpg.ok-out       => estop-latch.toolsetter.ok-in
+net estop-latch-mpg-ok-in           <= iocontrol.0.user-enable-out  => estop_latch_mpg.ok-in
+net estop-latch-mpg-ts-ok-out-in    <= estop_latch_mpg.ok-out       => estop_latch_toolsetter.ok-in
 
 # Wire iocontrol.0.user-request-enable to reset-in of all latches
-net estop-latch-mpg-reset-in        <= iocontrol.0.user-request-enable => estop-latch.mpg.reset-in
-net estop-latch-toolsetter-reset-in <= iocontrol.0.user-request-enable => estop-latch.toolsetter.reset-in
+net estop-latch-reset	<= iocontrol.0.user-request-enable
+net estop-latch-reset	=> estop_latch_mpg.reset
+net estop-latch-reset 	=> estop_latch_toolsetter.reset
 
 # Wire last ok-out to iocontrol.0.emc-enable-in
-net estop-latch-toolsetter-ok-out   <= estop-latch.toolsetter.ok-out => iocontrol.0.emc-enable-in
+net estop-latch-toolsetter-ok-out   <= estop_latch_toolsetter.ok-out => iocontrol.0.emc-enable-in
 
 # Connect fault-in
-net estop-latch-mpg-fault-in        <= vc-p2s.estop.activate => estop-latch.mpg.fault-in
-net estop-latch-toolsetter-fault-in <= lcec.0.DIN8.din-1-not => estop-latch.toolsetter.fault-in
+net estop-latch-mpg-fault-in        <= vc-p2s.estop.activate => estop_latch_mpg.fault-in
+net estop-latch-toolsetter-fault-in <= lcec.0.DIN8.din-1-not => estop_latch_toolsetter.fault-in

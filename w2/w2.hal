@@ -6,7 +6,6 @@ loadrt  lcec
 loadrt  pid names=x-pid,y-pid,z-pid
 loadrt  scale count=1
 loadrt  not names=home-sw-x-not,home-sw-y-not,home-sw-z-not
-loadrt  estop_latch
 
 # --- Attach modules to Servo Thread
 addf lcec.read-all              servo-thread
@@ -20,7 +19,6 @@ addf scale.0                    servo-thread
 addf home-sw-x-not              servo-thread
 addf home-sw-y-not              servo-thread
 addf home-sw-z-not              servo-thread
-addf estop-latch.0              servo-thread
 
 # --- Machine Controls
 net machine-is-enabled      <= motion.motion-enabled
@@ -29,12 +27,6 @@ net machine-is-enabled      <= motion.motion-enabled
 net ec-slaves-responding    <= lcec.slaves-responding
 net ec-link-up              <= lcec.link-up
 net ec-all-op               <= lcec.all-op
-
-# --- E-Stop
-# https://forum.linuxcnc.org/10-advanced-configuration/32789-educate-me-about-estop-chains-and-latches?start=10#93394
-net estop-loopout           iocontrol.0.emc-enable-in           <= estop-latch.0.ok-out
-net estop-loopin            iocontrol.0.user-enable-out         => estop-latch.0.ok-in
-net estop-reset             iocontrol.0.user-request-enable     => estop-latch.0.reset
 
 # --- Coolant
 net coolant-mist            <=  iocontrol.0.coolant-mist => lcec.0.DOUT8.dout-0
