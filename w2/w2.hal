@@ -3,9 +3,14 @@ loadrt  [KINS]KINEMATICS
 loadrt  [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 loadusr -W lcec_conf [LCEC]CONFIG
 loadrt  lcec
-loadrt  pid names=x-pid,y-pid,z-pid
-loadrt  scale count=1
-loadrt  not names=home-sw-x-not,home-sw-y-not,home-sw-z-not
+loadrt  pid     names=x-pid,y-pid,z-pid
+loadrt  scale   count=1
+loadrt  not     names=home-sw-x-not,home-sw-y-not,home-sw-z-not
+loadrt  and2    names=and2.vc,signal-yellow-and2,signal-green-and2
+loadrt  siggen  num_chan=1
+loadrt  xor2    names=signal-green-xor2
+
+
 
 # --- Attach modules to Servo Thread
 addf lcec.read-all              servo-thread
@@ -19,6 +24,11 @@ addf scale.0                    servo-thread
 addf home-sw-x-not              servo-thread
 addf home-sw-y-not              servo-thread
 addf home-sw-z-not              servo-thread
+addf and2.vc servo-thread
+addf signal-yellow-and2         servo-thread
+addf signal-green-and2          servo-thread
+addf siggen.0.update  servo-thread
+addf signal-green-xor2          servo-thread
 
 # --- Machine Controls
 net machine-is-enabled      <= motion.motion-enabled

@@ -1,8 +1,7 @@
 # 0---vc-p2s Control Pendant
 loadusr -W vc-p2s
 
-loadrt and2 names=and2.vc
-addf and2.vc servo-thread
+
 
 # 1---LCD reletive Coordinates
 net axis.0.pos-relative halui.axis.x.pos-relative => vc-p2s.axis.0.pos-relative

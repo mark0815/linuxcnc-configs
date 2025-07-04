@@ -1,0 +1,23 @@
+# lcec.0.DOUT8.dout-4 SIGNAL
+# lcec.0.DOUT8.dout-5 GREEN
+# lcec.0.DOUT8.dout-6 YELLOW
+# lcec.0.DOUT8.dout-7 RED
+
+# Red Light (halui->estop)
+net signal-red-out      <= halui.estop.is-activated
+net signal-red-out      => lcec.0.DOUT8.dout-7
+
+# Yellow Light
+net signal-yellow-in1   <= halui.machine.is-on    => signal-yellow-and2.in0
+net signal-yellow-in2   <= halui.program.is-idle  => signal-yellow-and2.in1
+net signal-yellow-out   <= signal-yellow-and2.out
+net signal-yellow-out   => lcec.0.DOUT8.dout-6
+
+# Green Light
+setp signal-green-flash-siggen.frequency 2
+
+net signal-green-in1    <= halui.program.is-running         => signal-green-xor2.in0
+net signal-green-in2    <= halui.program.is-paused          => signal-green-and2.in1
+net signal-green-flash  <= siggen.0.clock  => signal-green-and2.in0
+net green-flash         <= signal-green-and2.out            => signal-green-xor2.in1
+net green-on            <= signal-green-xor2.out            => lcec.0.DOUT8.dout-5
