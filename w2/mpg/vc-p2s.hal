@@ -93,7 +93,7 @@ net spindle.stop    vc-p2s.spindle.stop     => halui.spindle.0.stop
 # 11---E-STOP
 #net estop-mpg vc-p2s.estop.activate    => halui.estop.activate
 net reset-mpg vc-p2s.estop.reset        => halui.estop.reset
-net estop-is-activated-mpg              <= halui.estop.is-activated => vc-p2s.estop.is-activated
+net signal-red-out               => vc-p2s.estop.is-activated
 
 # 12---MACHINE
 net machine-on  vc-p2s.machine.on  => halui.machine.on
