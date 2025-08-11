@@ -9,7 +9,7 @@ loadrt  not     names=home-sw-x-not,home-sw-y-not,home-sw-z-not
 loadrt  and2    names=and2.vc,signal-yellow-and2,signal-green-and2
 loadrt  siggen  num_chan=1
 loadrt  xor2    names=signal-green-xor2
-
+loadusr -W hal_manualtoolchange
 
 
 # --- Attach modules to Servo Thread
@@ -40,6 +40,12 @@ net ec-all-op               <= lcec.all-op
 
 # --- Coolant
 net coolant-mist            <=  iocontrol.0.coolant-mist => lcec.0.DOUT8.dout-0
+
+# --- Manual Tool Change
+net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
+net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
+net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
+net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
 ############################
 ### X-AXIS
