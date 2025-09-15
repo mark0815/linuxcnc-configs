@@ -6,7 +6,7 @@ G92.1    (Cancel G92 offset)
 
 G49    (cancel tlo)
 G90    (set absolute coordinates)
-G53 G0 Z0    (move to z0 home position)
+G53 G0 Z#<_ini[TOOL_SENSOR]TOP_Z>    (move to z0 home position)
 G53 G0 X#<_ini[TOOL_SENSOR]POSITION_X> Y#<_ini[TOOL_SENSOR]POSITION_Y>
 G53 G0 Z#<_ini[TOOL_SENSOR]ROUGH_POSITION_Z>
 
@@ -36,7 +36,7 @@ o<120> endif
 
 G49
 G90    (set absolute coordinates)
-G53 G0 Z0 (Send Spindle to home zero position)
+G53 G0 Z#<_ini[TOOL_SENSOR]TOP_Z> (Send Spindle to home zero position)
 
 (define new tool length offset parameters)
 #<_tool_setter_z_pos> = [#<workspace_z> + #<z_slow_probe>]
