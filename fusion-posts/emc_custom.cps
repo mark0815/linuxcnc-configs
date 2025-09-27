@@ -10,7 +10,7 @@
   FORKID {52A5C3D6-1533-413E-B493-7B93D9E48B30}
 */
 
-description = "Enhanced Machine Controller (EMC)";
+description = "(CUSTOM) Enhanced Machine Controller (EMC)";
 vendor = "LinuxCNC";
 vendorUrl = "http://www.linuxcnc.org";
 legal = "Copyright (C) 2012-2025 by Autodesk, Inc.";
@@ -672,11 +672,12 @@ function onSectionEnd() {
 function onClose() {
   optionalSection = false;
   setCoolant(COOLANT_OFF);
+  writeBlock(mFormat.format(5));
   writeRetract(Z);
   setWorkPlane(new Vector(0, 0, 0)); // reset working plane
-  if (getSetting("retract.homeXY.onProgramEnd", false)) {
-    writeRetract(settings.retract.homeXY.onProgramEnd);
-  }
+  // if (getSetting("retract.homeXY.onProgramEnd", false)) {
+  //   writeRetract(settings.retract.homeXY.onProgramEnd);
+  // }
   writeBlock(mFormat.format(30)); // stop program, spindle stop, coolant off
   writeln("%");
 }
